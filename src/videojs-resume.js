@@ -111,9 +111,9 @@ videojs.registerComponent('ResumeCancelButton', ResumeCancelButton);
 videojs.registerComponent('ModalButtons', ModalButtons);
 videojs.registerComponent('ResumeModal', ResumeModal);
 
-const Resume = function(options) {
-  let msg;
-
+const Resume = function (options) {
+  let msg, last_url, key;
+  //Check store
   if (!store) {
     return videojs.log('store.js is not available');
   }
@@ -123,22 +123,26 @@ const Resume = function(options) {
     return videojs.log(msg);
   }
 
-  let videoId = options.uuid;
   let title = options.title || 'Resume from where you left off?';
   let resumeButtonText = options.resumeButtonText || 'Resume';
   let cancelButtonText = options.cancelButtonText || 'No Thanks';
   let playbackOffset = options.playbackOffset || 0;
-  let key = 'videojs-resume:' + videoId;
 
-  this.on('timeupdate', function() {
-    store.set(key, this.currentTime());
+  this.on('timeupdate', function () {
+    let time = this.currentTime();
+    if (time > 0 && key) { // fix bug in chrome
+      store.set(key, time);
+    }
   });
 
-  this.on('ended', function() {
+  this.on('ended', function () {
     store.remove(key);
   });
 
-  this.ready(function() {
+  this.on('loadstart', function () {
+    last_url = this.src();
+    key = 'videojs-resume:' + last_url;
+
     let resumeFromTime = store.get(key);
 
     if (resumeFromTime) {
@@ -156,7 +160,7 @@ const Resume = function(options) {
         key
       });
     }
-  });
+  })
 };
 
 videojs.plugin('Resume', Resume);

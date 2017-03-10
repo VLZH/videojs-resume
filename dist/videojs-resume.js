@@ -173,8 +173,10 @@ _videoJs2['default'].registerComponent('ModalButtons', ModalButtons);
 _videoJs2['default'].registerComponent('ResumeModal', ResumeModal);
 
 var Resume = function Resume(options) {
-  var msg = undefined;
-
+  var msg = undefined,
+      last_url = undefined,
+      key = undefined;
+  //Check store
   if (!_store2['default']) {
     return _videoJs2['default'].log('store.js is not available');
   }
@@ -184,22 +186,27 @@ var Resume = function Resume(options) {
     return _videoJs2['default'].log(msg);
   }
 
-  var videoId = options.uuid;
   var title = options.title || 'Resume from where you left off?';
   var resumeButtonText = options.resumeButtonText || 'Resume';
   var cancelButtonText = options.cancelButtonText || 'No Thanks';
   var playbackOffset = options.playbackOffset || 0;
-  var key = 'videojs-resume:' + videoId;
 
   this.on('timeupdate', function () {
-    _store2['default'].set(key, this.currentTime());
+    var time = this.currentTime();
+    if (time > 0 && key) {
+      // fix bug in chrome
+      _store2['default'].set(key, time);
+    }
   });
 
   this.on('ended', function () {
     _store2['default'].remove(key);
   });
 
-  this.ready(function () {
+  this.on('loadstart', function () {
+    last_url = this.src();
+    key = 'videojs-resume:' + last_url;
+
     var resumeFromTime = _store2['default'].get(key);
 
     if (resumeFromTime) {
