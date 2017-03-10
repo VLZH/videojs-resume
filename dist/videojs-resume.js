@@ -202,28 +202,34 @@ var Resume = function Resume(options) {
   this.on('ended', function () {
     _store2['default'].remove(key);
   });
+  // event from videojs-resolution-switcher
+  // Note:
+  // i don't think that you need to use my code =))
+  this.on('updateSources', function () {
+    this.one('loadstart', function () {
+      last_url = this.currentSources[0]['src'];
+      key = 'videojs-resume:' + last_url;
 
-  this.on('loadstart', function () {
-    last_url = this.src();
-    key = 'videojs-resume:' + last_url;
+      var resumeFromTime = _store2['default'].get(key);
 
-    var resumeFromTime = _store2['default'].get(key);
-
-    if (resumeFromTime) {
-      if (resumeFromTime >= 5) {
-        resumeFromTime -= playbackOffset;
+      if (resumeFromTime) {
+        if (resumeFromTime >= 5) {
+          resumeFromTime -= playbackOffset;
+        }
+        if (resumeFromTime <= 0) {
+          resumeFromTime = 0;
+        }
+        var modal_options = {
+          title: title,
+          resumeButtonText: resumeButtonText,
+          cancelButtonText: cancelButtonText,
+          resumeFromTime: resumeFromTime,
+          key: key
+        };
+        if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
+        this.addChild('ResumeModal', modal_options);
       }
-      if (resumeFromTime <= 0) {
-        resumeFromTime = 0;
-      }
-      this.addChild('ResumeModal', {
-        title: title,
-        resumeButtonText: resumeButtonText,
-        cancelButtonText: cancelButtonText,
-        resumeFromTime: resumeFromTime,
-        key: key
-      });
-    }
+    });
   });
 };
 

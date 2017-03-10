@@ -138,28 +138,34 @@ const Resume = function (options) {
   this.on('ended', function () {
     store.remove(key);
   });
+  // event from videojs-resolution-switcher
+  // Note:
+  // i don't think that you need to use my code =))
+  this.on('updateSources', function () {
+    this.one('loadstart', function () {
+      last_url = this.currentSources[0]['src'];
+      key = 'videojs-resume:' + last_url;
 
-  this.on('loadstart', function () {
-    last_url = this.src();
-    key = 'videojs-resume:' + last_url;
+      let resumeFromTime = store.get(key);
 
-    let resumeFromTime = store.get(key);
-
-    if (resumeFromTime) {
-      if (resumeFromTime >= 5) {
-        resumeFromTime -= playbackOffset;
+      if (resumeFromTime) {
+        if (resumeFromTime >= 5) {
+          resumeFromTime -= playbackOffset;
+        }
+        if (resumeFromTime <= 0) {
+          resumeFromTime = 0;
+        }
+        let modal_options = {
+          title,
+          resumeButtonText,
+          cancelButtonText,
+          resumeFromTime,
+          key
+        };
+        if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
+        this.addChild('ResumeModal', modal_options);
       }
-      if (resumeFromTime <= 0) {
-        resumeFromTime = 0;
-      }
-      this.addChild('ResumeModal', {
-        title,
-        resumeButtonText,
-        cancelButtonText,
-        resumeFromTime,
-        key
-      });
-    }
+    })
   })
 };
 
