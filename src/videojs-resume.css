@@ -2,10 +2,7 @@
   position: relative;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #111;
-  color: #fff;
   margin: 0 auto;
-  padding: 10px 0;
   font-size: 14px;
   width: 225px;
   border-radius: 10px;
@@ -16,16 +13,61 @@
   margin: 0 0 10px 0;
 }
 
-.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button {
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button.vjs-resume:before,
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button.vjs-no-resume:before {
+  font-family: 'icomoon-player' !important;
+  font-size: 1.2em;
   color: #fff;
-  padding: 10px;
-  background-color: #42a5f5;
-  border-radius: 5px;
-  margin: 5px;
+  margin-right: 7px;
+  position: relative;
+}
+
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button.vjs-resume:before {
+  content: "\e9000";
+}
+
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button.vjs-no-resume:before {
+  content: "\e9080";
+  top: 1px;
+}
+
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button {
+  background-color: rgba(44, 62, 80, 0.86);
+  border: 0;
+  padding: 7px 16px 8px 16px;
+  margin: 0;
   font-size: 12px;
+  display: inline-block;
+  zoom: 1;
   cursor: pointer;
+  white-space: nowrap;
+  outline: none;
+  vertical-align: top;
+  overflow: visible;
+  line-height: 15px;
+  text-decoration: none;
+  color: #FFF;
+  -webkit-border-radius: 2px;
+  -khtml-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-transition: background-color 100ms ease-in-out;
+  -khtml-transition: background-color 100ms ease-in-out;
+  -moz-transition: background-color 100ms ease-in-out;
+  -ms-transition: background-color 100ms ease-in-out;
+  -o-transition: background-color 100ms ease-in-out;
+  transition: background-color 100ms ease-in-out;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button:hover {
-  background-color: #90caf9;
+  background-color: #2C3E50;
+  color: #fff;
+}
+
+.vjs-default-skin .vjs-resume-modal .vjs-resume-modal-buttons button:active {
+  background-color: #2C3E50;
+  color: #fff;
 }
