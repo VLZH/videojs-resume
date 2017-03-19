@@ -142,7 +142,7 @@ const Resume = function (options) {
   // Note:
   // i don't think that you need to use my code =))
   this.on('updateSources', function () {
-    this.one('loadstart', function () {
+    this.one('loadedmetadata', function () {
       last_url = this.currentSources[0]['src'];
       key = 'videojs-resume:' + last_url;
 
