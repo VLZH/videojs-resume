@@ -144,7 +144,7 @@ const Resume = function (options) {
   this.on('updateSources', function () {
     this.one('loadedmetadata', function () {
       last_url = this.currentSources[0]['src'];
-      key = 'videojs-resume:' + last_url;
+	  key = 'videojs-resume:' + this.player_.resume_key;
 
       let resumeFromTime = store.get(key);
 
