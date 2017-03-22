@@ -112,7 +112,7 @@ videojs.registerComponent('ModalButtons', ModalButtons);
 videojs.registerComponent('ResumeModal', ResumeModal);
 
 const Resume = function (options) {
-  let msg, last_url, key;
+  let msg, key;
   //Check store
   if (!store) {
     return videojs.log('store.js is not available');
@@ -138,34 +138,28 @@ const Resume = function (options) {
   this.on('ended', function () {
     store.remove(key);
   });
-  // event from videojs-resolution-switcher
-  // Note:
-  // i don't think that you need to use my code =))
-  this.on('updateSources', function () {
-    this.one('loadedmetadata', function () {
-      last_url = this.currentSources[0]['src'];
-	  key = 'videojs-resume:' + this.player_.resume_key;
+  // You should to fire the event "ready_forresume" yourself
+  this.on('ready_forresume', function (e, _key) {
+    key = 'videojs-resume:' + _key;
+    let resumeFromTime = store.get(key);
 
-      let resumeFromTime = store.get(key);
-
-      if (resumeFromTime) {
-        if (resumeFromTime >= 5) {
-          resumeFromTime -= playbackOffset;
-        }
-        if (resumeFromTime <= 0) {
-          resumeFromTime = 0;
-        }
-        let modal_options = {
-          title,
-          resumeButtonText,
-          cancelButtonText,
-          resumeFromTime,
-          key
-        };
-        if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
-        this.addChild('ResumeModal', modal_options);
+    if (resumeFromTime) {
+      if (resumeFromTime >= 5) {
+        resumeFromTime -= playbackOffset;
       }
-    })
+      if (resumeFromTime <= 0) {
+        resumeFromTime = 0;
+      }
+      let modal_options = {
+        title,
+        resumeButtonText,
+        cancelButtonText,
+        resumeFromTime,
+        key
+      };
+      if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
+      this.addChild('ResumeModal', modal_options);
+    }
   })
 };
 

@@ -174,7 +174,6 @@ _videoJs2['default'].registerComponent('ResumeModal', ResumeModal);
 
 var Resume = function Resume(options) {
   var msg = undefined,
-      last_url = undefined,
       key = undefined;
   //Check store
   if (!_store2['default']) {
@@ -202,34 +201,28 @@ var Resume = function Resume(options) {
   this.on('ended', function () {
     _store2['default'].remove(key);
   });
-  // event from videojs-resolution-switcher
-  // Note:
-  // i don't think that you need to use my code =))
-  this.on('updateSources', function () {
-    this.one('loadedmetadata', function () {
-      last_url = this.currentSources[0]['src'];
-      key = 'videojs-resume:' + this.player_.resume_key;
+  // You should to fire the event "ready_forresume" yourself
+  this.on('ready_forresume', function (e, _key) {
+    key = 'videojs-resume:' + _key;
+    var resumeFromTime = _store2['default'].get(key);
 
-      var resumeFromTime = _store2['default'].get(key);
-
-      if (resumeFromTime) {
-        if (resumeFromTime >= 5) {
-          resumeFromTime -= playbackOffset;
-        }
-        if (resumeFromTime <= 0) {
-          resumeFromTime = 0;
-        }
-        var modal_options = {
-          title: title,
-          resumeButtonText: resumeButtonText,
-          cancelButtonText: cancelButtonText,
-          resumeFromTime: resumeFromTime,
-          key: key
-        };
-        if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
-        this.addChild('ResumeModal', modal_options);
+    if (resumeFromTime) {
+      if (resumeFromTime >= 5) {
+        resumeFromTime -= playbackOffset;
       }
-    });
+      if (resumeFromTime <= 0) {
+        resumeFromTime = 0;
+      }
+      var modal_options = {
+        title: title,
+        resumeButtonText: resumeButtonText,
+        cancelButtonText: cancelButtonText,
+        resumeFromTime: resumeFromTime,
+        key: key
+      };
+      if (this.player_.resumeModal) this.player_.removeChild(this.player_.resumeModal);
+      this.addChild('ResumeModal', modal_options);
+    }
   });
 };
 

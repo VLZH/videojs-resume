@@ -1,3 +1,5 @@
+# Trust me! This fork is garbage for you!
+
 # VideoJS Resume
 
 A VideoJS plugin to resume playback of a video at the point in time it was left.
