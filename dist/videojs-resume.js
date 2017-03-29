@@ -51,9 +51,18 @@ var ResumeButton = (function (_Button) {
     key: 'handleClick',
     value: function handleClick() {
       this.player_.resumeModal.close();
-      this.player_.currentTime(this.resumeFromTime);
-      this.player_.play();
-      this.player_.trigger('resumevideo');
+
+      var run = (function () {
+        this.player_.currentTime(this.resumeFromTime);
+        this.player_.play();
+        this.player_.trigger('resumevideo');
+      }).bind(this);
+
+      if (this.player_.duration() === 0) {
+        this.player_.on("loadmetadata", run);
+      } else {
+        run();
+      }
     }
   }, {
     key: 'handleKeyPress',
@@ -202,7 +211,7 @@ var Resume = function Resume(options) {
     _store2['default'].remove(key);
   });
   // You should to fire the event "ready_forresume" yourself
-  this.on('ready_forresume', function (e, _key) {
+  this.on("videojs-showresume", function (e, _key) {
     key = 'videojs-resume:' + _key;
     var resumeFromTime = _store2['default'].get(key);
 

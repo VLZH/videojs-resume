@@ -24,9 +24,18 @@ class ResumeButton extends Button {
 
   handleClick() {
     this.player_.resumeModal.close();
-    this.player_.currentTime(this.resumeFromTime);
-    this.player_.play();
-    this.player_.trigger('resumevideo');
+
+    var run = function() {
+      this.player_.currentTime(this.resumeFromTime);
+      this.player_.play();
+      this.player_.trigger('resumevideo');
+    }.bind(this);
+
+    if(this.player_.duration() === 0){
+      this.player_.on("loadmetadata", run)
+    }else{
+      run()
+    }
   }
 
   handleKeyPress(event) {
@@ -139,7 +148,7 @@ const Resume = function (options) {
     store.remove(key);
   });
   // You should to fire the event "ready_forresume" yourself
-  this.on('ready_forresume', function (e, _key) {
+  this.on("videojs-showresume", function (e, _key) {
     key = 'videojs-resume:' + _key;
     let resumeFromTime = store.get(key);
 
