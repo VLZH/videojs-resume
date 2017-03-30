@@ -115,7 +115,19 @@ class ResumeModal extends ModalDialog {
   buildCSSClass() {
     return `vjs-resume-modal ${super.buildCSSClass()}`;
   }
+
+  open(){
+    this.player_.addClass("vjs-resumemodal");
+    super.open();
+  }
+
+  close(){
+    this.player_.removeClass("vjs-resumemodal");
+    super.close();
+  }
 }
+
+
 videojs.registerComponent('ResumeButton', ResumeButton);
 videojs.registerComponent('ResumeCancelButton', ResumeCancelButton);
 videojs.registerComponent('ModalButtons', ModalButtons);

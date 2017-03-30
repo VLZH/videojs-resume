@@ -172,6 +172,18 @@ var ResumeModal = (function (_ModalDialog) {
     value: function buildCSSClass() {
       return 'vjs-resume-modal ' + _get(Object.getPrototypeOf(ResumeModal.prototype), 'buildCSSClass', this).call(this);
     }
+  }, {
+    key: 'open',
+    value: function open() {
+      this.player_.addClass("vjs-resumemodal");
+      _get(Object.getPrototypeOf(ResumeModal.prototype), 'open', this).call(this);
+    }
+  }, {
+    key: 'close',
+    value: function close() {
+      this.player_.removeClass("vjs-resumemodal");
+      _get(Object.getPrototypeOf(ResumeModal.prototype), 'close', this).call(this);
+    }
   }]);
 
   return ResumeModal;
