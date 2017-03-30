@@ -68,6 +68,7 @@ class ResumeCancelButton extends Button {
 
   handleClick() {
     this.player_.resumeModal.close();
+    this.player_.play();
     store.remove(this.options_.key);
   }
 }

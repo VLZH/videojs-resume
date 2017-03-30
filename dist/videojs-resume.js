@@ -110,6 +110,7 @@ var ResumeCancelButton = (function (_Button2) {
     key: 'handleClick',
     value: function handleClick() {
       this.player_.resumeModal.close();
+      this.player_.play();
       _store2['default'].remove(this.options_.key);
     }
   }]);
