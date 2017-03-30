@@ -60,7 +60,7 @@ var ResumeButton = (function (_Button) {
 
       if (this.player_.duration() === 0) {
         this.player_.load();
-        this.player_.one("loadmetadata", run);
+        this.player_.one("loadedmetadata", run);
       } else {
         run();
       }
