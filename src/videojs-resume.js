@@ -26,13 +26,14 @@ class ResumeButton extends Button {
     this.player_.resumeModal.close();
 
     var run = function() {
-      this.player_.currentTime(this.resumeFromTime);
       this.player_.play();
+      this.player_.currentTime(this.resumeFromTime);
       this.player_.trigger('resumevideo');
     }.bind(this);
 
     if(this.player_.duration() === 0){
-      this.player_.on("loadmetadata", run)
+      this.player_.load();
+      this.player_.one("loadmetadata", run)
     }else{
       run()
     }
